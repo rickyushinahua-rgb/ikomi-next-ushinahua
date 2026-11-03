@@ -14,7 +14,7 @@ La aplicación utilizará componentes reutilizables, navegación entre páginas,
 
 ### Estado del proyecto
 
-Actualmente se ha completado la configuración inicial de Next.js, la documentación técnica, la preparación del repositorio Git y la primera prueba de compilación.
+Actualmente se ha completado la configuración inicial de Next.js, la documentación técnica, la preparación del repositorio Git y la primera prueba de compilación. La ruta `/` muestra una portada temporal con colores corporativos, fuente Geist y metadatos generales de IKOMI PERÚ.
 
 Las páginas corporativas y los componentes personalizados se implementarán progresivamente, registrando cada avance mediante commits descriptivos en GitHub.
 
@@ -130,7 +130,7 @@ Las siguientes rutas forman parte de los requisitos de la evaluación y se imple
 
 | Página | Ruta | Estado |
 |---|---|---|
-| Inicio | `/` | Plantilla inicial; pendiente de personalización |
+| Inicio | `/` | Portada temporal; página corporativa definitiva pendiente |
 | Nosotros | `/nosotros` | Pendiente |
 | Servicios | `/servicios` | Pendiente |
 | Productos | `/productos` | Pendiente |
@@ -162,7 +162,7 @@ Estos componentes todavía están pendientes de implementación.
 
 ```text
 RootLayout (Server Component)
-└── HomePage (Server Component)
+└── HomePage (Server Component; portada temporal)
 ```
 
 El layout raíz está definido en `app/layout.tsx` y la página principal en `app/page.tsx`.
@@ -193,10 +193,11 @@ RootLayout (Server Component)
 
 Se utiliza **Tailwind CSS** como estrategia principal para la estilización de la aplicación.
 
-La interfaz se desarrollará considerando:
+La identidad visual base ya utiliza `@theme` de Tailwind CSS 4 en `app/globals.css`: azul principal `#143F77`, azul secundario `#2169B0`, texto oscuro `#152235`, fondo `#F3F6FA` y blanco `#FFFFFF`. Geist se aplica globalmente con `next/font`, sin carga de la fuente desde un CDN en el navegador.
 
-- Colores corporativos coherentes con la referencia visual.
-- Tipografía mediante `next/font`.
+Las páginas corporativas se desarrollarán considerando:
+
+- Reutilización de los colores y la tipografía ya centralizados.
 - Imágenes optimizadas con `next/image`.
 - Distribución adaptable a pantallas móviles, tabletas y computadoras.
 - Transiciones visuales que mejoren la interacción.

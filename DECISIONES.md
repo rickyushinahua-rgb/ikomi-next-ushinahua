@@ -24,12 +24,30 @@ Estas decisiones buscan facilitar la organización del código, la reutilizació
 
 Además, Tailwind facilita implementar diseños adaptables a diferentes resoluciones mediante sus variantes responsive.
 
+### 2.2. Identidad visual base
+
+Se definieron cinco colores en `app/globals.css` mediante `@theme` de Tailwind CSS 4:
+
+| Variable | Valor | Uso previsto |
+|---|---|---|
+| `--color-primary` | `#143F77` | Azul principal para títulos y elementos destacados. |
+| `--color-secondary` | `#2169B0` | Azul de apoyo para acentos. |
+| `--color-dark` | `#152235` | Texto sobre fondos claros. |
+| `--color-background` | `#F3F6FA` | Fondo claro del sitio. |
+| `--color-white` | `#FFFFFF` | Superficies blancas y texto sobre fondos oscuros cuando corresponda. |
+
+Los azules diferencian la identidad de IKOMI PERÚ y el tono oscuro sobre blanco o fondo claro favorece la lectura. `@theme` permite reutilizar los mismos valores como variables CSS y mediante utilidades como `text-primary`, `bg-secondary` y `bg-background`, sin agregar una configuración antigua de Tailwind.
+
+Se conserva **Geist** mediante `next/font/google`, ya presente en el proyecto. Next.js aloja la fuente con la aplicación para que el navegador no dependa de un CDN de tipografía; `--font-geist-sans` se vincula con `--font-sans` mediante `@theme inline`. Se eliminó Geist Mono porque esta portada no necesita una fuente monoespaciada.
+
+La estrategia es reservar `app/globals.css` para tokens de diseño y estilos globales mínimos (fondo y color del texto), y usar utilidades Tailwind en la portada temporal. Esto evita duplicar colores en las páginas y mantiene los estilos fáciles de identificar y ajustar durante la implementación corporativa posterior.
+
 ## 3. Función de los archivos principales
 
 | Archivo o carpeta | Función dentro del proyecto |
 |---|---|
 | `app/layout.tsx` | Define la estructura principal compartida de la aplicación mediante las etiquetas `html` y `body`. Permite cargar estilos globales, configurar fuentes y mostrar las páginas mediante `children`. También permite establecer metadatos generales. |
-| `app/page.tsx` | Representa la página principal de la aplicación, correspondiente a la ruta `/`. En este archivo se desarrollará la portada corporativa de IKOMI PERÚ. |
+| `app/page.tsx` | Representa la ruta `/`; ahora muestra una portada temporal con la identidad visual base, no la página corporativa definitiva. |
 | `app/globals.css` | Contiene los estilos globales del proyecto y permite establecer variables visuales reutilizables, como colores y tipografía. |
 | `public/` | Almacena recursos estáticos como imágenes, logotipos e íconos. Los archivos pueden utilizarse desde las páginas y componentes mediante rutas públicas. |
 | `next.config.ts` | Permite configurar el comportamiento de Next.js y establecer opciones relacionadas con la compilación y otras características del framework. |

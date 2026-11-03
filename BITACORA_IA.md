@@ -330,3 +330,109 @@ Resumen de la respuesta: se revisaron el estado de Git y los tres documentos; se
 Decisión tomada (modificado): actualizar la documentación generada inicialmente como borrador, mantener las cinco elecciones técnicas que ya usa el repositorio y dejar constancia de que la explicación de Turbopack es una posibilidad sin aplicar cambios de configuración.
 
 Justificación: la documentación anterior describía evidencias/ como vacía, aunque ahora existe una captura, y contenía expresiones de borrador que el estudiante pidió retirar de los documentos de presentación. Los argumentos técnicos se formulan sobre el proyecto actual y las ventajas futuras se describen como posibilidades, no como funcionalidades o mediciones ya comprobadas. Las motivaciones personales definitivas siguen correspondiendo al estudiante.
+
+## Entrada 3 — 03/11/2026 — identidad visual base
+
+**Objetivo:** configurar los colores, la tipografía, los metadatos y una portada temporal para IKOMI PERÚ, sin adelantar las rutas ni los componentes corporativos.
+
+**Prompt utilizado (texto íntegro del usuario):**
+
+```text
+PROYECTO: IKOMI PERÚ — Evaluación 03 de Desarrollo de Aplicaciones Web Avanzado, TECSUP.
+
+CONTEXTO:
+Estamos recreando el sitio web corporativo https://www.ikomiperu.com/ con Next.js 16.4.4, App Router, TypeScript, Tailwind CSS 4 y ESLint.
+El profesor evalúa configuración, rutas, navegación, componentes reutilizables y uso crítico de IA, con 4 puntos por criterio, total 20.
+
+Repositorio: https://github.com/rickyushinahua-rgb/ikomi-next-ushinahua
+Rama: main.
+La documentación inicial ya está publicada en GitHub.
+El proyecto utiliza app/ directamente en la raíz y no utiliza src/.
+
+OBJETIVO ÚNICO DE ESTA ETAPA:
+Configurar la identidad visual base del proyecto para preparar el desarrollo posterior de las páginas corporativas.
+
+REGLAS:
+1. Ningún archivo de código debe superar las 350 líneas, preferiblemente menos de 250.
+2. Código claro, ordenado, legible y modular.
+3. No comprimir código en líneas demasiado largas.
+4. No utilizar Pages Router, next/router ni getStaticProps.
+5. Mantener Server Components por defecto.
+6. No utilizar 'use client' salvo necesidad real.
+7. No instalar paquetes adicionales sin justificarlo.
+8. No crear todavía Navbar, Footer, Hero, ProductCard, SectionTitle ni ContactForm.
+9. No desarrollar todavía las rutas Nosotros, Servicios, Productos, Marcas ni Contacto.
+10. No ejecutar git commit ni git push; esos pasos se harán manualmente.
+
+ARCHIVOS PERMITIDOS:
+- app/layout.tsx
+- app/globals.css
+- app/page.tsx
+- DECISIONES.md
+- BITACORA_IA.md
+- README.md, solo si es necesario actualizar información que haya quedado desactualizada.
+
+TAREAS:
+
+1. Revisar la configuración existente de Next.js y Tailwind 4 antes de modificar archivos.
+
+2. Configurar las variables de colores corporativos:
+   --color-primary: #143F77;
+   --color-secondary: #2169B0;
+   --color-dark: #152235;
+   --color-background: #F3F6FA;
+   --color-white: #FFFFFF;
+
+   Integrarlas correctamente con Tailwind CSS 4 usando la configuración actual. No crear una configuración antigua de Tailwind innecesariamente.
+
+3. Configurar una fuente profesional con next/font. Preferir Geist si ya está instalada o configurada. Evitar importar tipografías desde CDN externas.
+
+4. Actualizar app/layout.tsx:
+   - html lang="es".
+   - Metadata global para IKOMI PERÚ, con título y descripción relacionados con repuestos automotrices.
+   - Conservar la importación de globals.css.
+   - Mantener el layout como Server Component.
+   - No agregar Navbar ni Footer todavía; se implementarán en otro avance.
+
+5. Actualizar app/globals.css:
+   - Mantener Tailwind CSS 4.
+   - Centralizar colores y tipografía.
+   - Agregar estilos globales sencillos y consistentes.
+   - Evitar duplicaciones y reglas innecesarias.
+   - Asegurar legibilidad y contraste.
+
+6. Actualizar app/page.tsx para sustituir la plantilla create-next-app por una portada TEMPORAL sencilla:
+   - Nombre IKOMI PERÚ.
+   - Subtítulo relacionado con repuestos automotrices.
+   - Presentación visual utilizando los nuevos colores.
+   - No convertir esta pantalla temporal en la página corporativa definitiva.
+   - No utilizar imágenes externas todavía.
+
+7. Actualizar DECISIONES.md explicando las elecciones reales sobre colores, tipografía y estrategia de estilos.
+
+8. Registrar esta interacción de forma fiel en BITACORA_IA.md con objetivo, prompt completo, resumen de respuesta, decisión tomada y justificación. No inventar errores ni pruebas.
+
+9. Si README.md describe todavía la plantilla inicial de Next.js, actualizar solamente esa información para reflejar el nuevo estado.
+
+VERIFICACIONES:
+- Ejecutar npm run build.
+- Ejecutar npx eslint .
+- Verificar que ningún archivo de código modificado supere las 350 líneas.
+- Si una verificación falla, explicar la causa y corregir únicamente lo necesario.
+- No inventar resultados de comprobación.
+
+AL FINALIZAR:
+- Mostrar archivos modificados.
+- Explicar brevemente cada modificación.
+- Indicar resultados reales de build y ESLint.
+- Detenerse al terminar esta etapa.
+- No crear commits ni hacer push.
+```
+
+**Resumen de la respuesta:** se revisaron `next.config.ts`, la configuración de Tailwind 4, `app/` y las guías instaladas de Next.js. Se definieron los cinco colores mediante `@theme`, se conservó Geist con `next/font`, se actualizaron el idioma y los metadatos globales y se sustituyó la plantilla por una portada temporal. Se actualizaron `DECISIONES.md` y las referencias desactualizadas de `README.md`.
+
+**Decisión tomada (aceptado con ajustes):** usar los valores de color solicitados, reutilizar Geist y limitar la página inicial a una presentación temporal; mantener componentes de servidor y no añadir rutas, dependencias ni componentes corporativos.
+
+**Justificación:** `@theme` expone tokens y utilidades reutilizables en Tailwind 4 sin un archivo de configuración adicional. La fuente ya estaba configurada, y una portada breve permite comprobar la identidad visual sin adelantarse a las etapas siguientes.
+
+**Verificaciones de esta interacción:** `npm run build` terminó correctamente: compiló, comprobó TypeScript y generó las páginas estáticas `/` y `/_not-found`. Mostró una advertencia no bloqueante: Next.js ignoró el `package-lock.json` de `Documents` por estar fuera del repositorio e indicó que se puede establecer `turbopack.root` para utilizar ese directorio. `npx eslint .` finalizó sin errores y sin mensajes. Recuento de líneas de código modificado: `app/layout.tsx` (22), `app/globals.css` (18) y `app/page.tsx` (24); ninguno supera 350 líneas. No se modificó `next.config.ts` ni se guardaron capturas nuevas en esta interacción.
