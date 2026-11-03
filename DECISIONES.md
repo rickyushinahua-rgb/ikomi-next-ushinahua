@@ -111,7 +111,7 @@ Estas son ventajas técnicas del framework; todavía no representan mediciones d
 
 Actualmente, el proyecto utiliza `app/layout.tsx` como layout raíz.
 
-Este archivo permitirá compartir elementos comunes como Navbar, Footer, estilos globales y tipografía.
+Este archivo ya comparte Navbar, Footer, estilos globales y tipografía entre las rutas. El contenido de cada página conserva su propio `<main>` semántico.
 
 El uso de layouts anidados se evaluará cuando se implemente el catálogo de productos. Inicialmente, no se considera necesario agregar un layout exclusivo para `/productos`, debido a que las páginas del catálogo pueden compartir el diseño general.
 
@@ -122,6 +122,16 @@ Por el momento, no se utilizarán Route Groups como `(marketing)`.
 Las páginas corporativas de IKOMI PERÚ pertenecen a una misma estructura visual, por lo que mantener rutas directas facilita comprender su organización.
 
 Si posteriormente se incorporan secciones con diseños independientes, se podrá reconsiderar esta decisión.
+
+### 6.3. Navegación y límite entre cliente y servidor
+
+`components/layout/Navbar.tsx` es un **Client Component** porque necesita `usePathname()` para identificar la ruta activa y `useState` para abrir y cerrar el menú móvil. La directiva `"use client"` se limita a ese archivo: `app/layout.tsx`, la portada temporal y `components/layout/Footer.tsx` permanecen como Server Components.
+
+Los enlaces internos utilizan `Link` de `next/link` para aprovechar la navegación del App Router sin forzar una recarga completa en rutas disponibles. `usePathname` permite aplicar `aria-current="page"` y estilos al enlace activo; en rutas de detalle, el prefijo `/productos/` mantendrá resaltada la sección Productos. El menú se cierra al seleccionar un enlace y se muestra cerrado si cambia la ruta. Las rutas corporativas enlazadas todavía no tienen páginas y mostrarán la respuesta predeterminada para rutas inexistentes hasta su implementación.
+
+El **Footer** no requiere hooks, eventos ni APIs del navegador, por lo que no necesita `"use client"`. Incluye una descripción breve y enlaces internos sin atribuir a IKOMI PERÚ datos de contacto no verificados. El año del copyright se calcula en una función de servidor con `"use cache"` y `cacheLife("days")`: con `cacheComponents` activo, leer `new Date()` directamente durante el prerender impide compilar; el valor cacheado puede actualizarse con la revalidación diaria.
+
+La comparación de `Link` con `<a href>` mediante DevTools Network y sus capturas quedan pendientes; no se ha realizado ese experimento en esta etapa.
 
 ## 7. Estado de verificación inicial
 

@@ -436,3 +436,134 @@ AL FINALIZAR:
 **Justificación:** `@theme` expone tokens y utilidades reutilizables en Tailwind 4 sin un archivo de configuración adicional. La fuente ya estaba configurada, y una portada breve permite comprobar la identidad visual sin adelantarse a las etapas siguientes.
 
 **Verificaciones de esta interacción:** `npm run build` terminó correctamente: compiló, comprobó TypeScript y generó las páginas estáticas `/` y `/_not-found`. Mostró una advertencia no bloqueante: Next.js ignoró el `package-lock.json` de `Documents` por estar fuera del repositorio e indicó que se puede establecer `turbopack.root` para utilizar ese directorio. `npx eslint .` finalizó sin errores y sin mensajes. Recuento de líneas de código modificado: `app/layout.tsx` (22), `app/globals.css` (18) y `app/page.tsx` (24); ninguno supera 350 líneas. No se modificó `next.config.ts` ni se guardaron capturas nuevas en esta interacción.
+
+## Entrada 4 — 03/11/2026 — Navbar y Footer
+
+**Objetivo:** crear únicamente la navegación global y el pie de página, integrarlos al layout raíz y mantener identificadas como pendientes las demás páginas y componentes.
+
+**Prompt utilizado (texto completo del usuario; las tres imágenes se adjuntaron como referencias visuales y se conservan identificadas aquí):**
+
+```text
+[Image 1] [Image 2] [Image 3] PROYECTO: IKOMI PERÚ — Evaluación 03 de Desarrollo de Aplicaciones Web Avanzado, TECSUP.
+
+CONTEXTO:
+Estamos recreando académicamente https://www.ikomiperu.com/ con Next.js 16.4.4, App Router, TypeScript y Tailwind CSS 4.
+Repositorio: https://github.com/rickyushinahua-rgb/ikomi-next-ushinahua
+Carpeta app/ en la raíz, sin src/.
+Ya configuramos colores, tipografía, metadata y una portada temporal.
+No realizaremos despliegue por limitaciones de tiempo.
+
+OBJETIVO DE ESTA ETAPA:
+Implementar únicamente los componentes reutilizables Navbar y Footer, integrados en app/layout.tsx, cumpliendo los criterios 3 y 4 de la rúbrica.
+
+REQUISITOS DEL NAVBAR:
+1. Crear components/layout/Navbar.tsx.
+2. Utilizar Link de next/link para todos los enlaces internos.
+3. Incluir Inicio (/), Nosotros (/nosotros), Servicios (/servicios), Productos (/productos), Marcas (/marcas) y Contáctenos (/contacto).
+4. Utilizar usePathname de next/navigation para resaltar el enlace activo.
+5. Aplicar 'use client' exclusivamente porque Navbar necesita usePathname y estado interactivo.
+6. Implementar menú hamburguesa responsive para pantallas pequeñas con useState.
+7. El menú debe abrirse, cerrarse y actualizarse al navegar.
+8. Incluir atributos accesibles como aria-label, aria-expanded y aria-controls.
+9. Mantener una altura equilibrada, navegación legible y colores corporativos.
+10. Mostrar el nombre IKOMI PERÚ como identidad temporal. No inventar un logo oficial.
+11. Los enlaces apuntarán a rutas que construiremos en etapas posteriores.
+
+REQUISITOS DEL FOOTER:
+1. Crear components/layout/Footer.tsx.
+2. Mantenerlo como Server Component, sin 'use client'.
+3. Utilizar las variables de color existentes.
+4. Incluir una descripción corporativa breve de IKOMI PERÚ.
+5. Incluir enlaces internos a las secciones solicitadas.
+6. Mostrar información de contacto solamente si está verificada en una fuente del proyecto; de lo contrario, evitar inventar teléfono, correo o dirección.
+7. Incluir derechos de autor con el año actual.
+
+INTEGRACIÓN:
+1. Importar Navbar y Footer en app/layout.tsx.
+2. Colocar Navbar antes de children y Footer después de children.
+3. Asegurar que el contenido principal tenga una estructura semántica adecuada.
+4. No modificar el comportamiento actual de metadata ni next/font.
+5. Mantener la portada temporal de app/page.tsx.
+
+REGLAS DE CÓDIGO:
+- Máximo 350 líneas por archivo, preferiblemente menos de 250.
+- Separar responsabilidades.
+- Código claro, legible y mantenible.
+- No comprimir código para cumplir el límite.
+- No usar Pages Router ni APIs obsoletas.
+- Evitar dependencias adicionales.
+- No crear las páginas Nosotros, Servicios, Productos, Marcas ni Contacto todavía.
+- No crear Hero, ProductCard, SectionTitle ni ContactForm en esta etapa.
+- No realizar commits ni push.
+
+DOCUMENTACIÓN:
+1. Actualizar DECISIONES.md explicando por qué Navbar es Client Component y Footer es Server Component.
+2. Explicar por qué utilizamos Link y usePathname.
+3. Registrar esta interacción real en BITACORA_IA.md como siguiente entrada, incluyendo el prompt completo, resumen, decisión y justificación.
+4. Actualizar README.md para reflejar únicamente los componentes implementados, sin presentar páginas pendientes como terminadas.
+
+VERIFICACIONES:
+1. Ejecutar npm run build.
+2. Ejecutar npx eslint .
+3. Comprobar que ningún archivo de código supera las 350 líneas.
+4. Verificar visualmente la navegación en desktop y móvil si el entorno lo permite.
+5. No afirmar que las rutas pendientes funcionan ni inventar resultados.
+
+Al terminar, mostrar los archivos modificados, las pruebas realizadas y una explicación breve de cada componente. Detenerse al finalizar esta etapa.
+```
+
+**Resumen de la respuesta:** se crearon `components/layout/Navbar.tsx` con enlaces `Link`, ruta activa con `usePathname` y menú móvil accesible, y `components/layout/Footer.tsx` como Server Component con enlaces y copyright sin datos de contacto no verificados. Se integraron ambos en `app/layout.tsx` y se conservó el contenido de la portada temporal, ajustando solo su crecimiento para que conviva con el encabezado y el pie. Se actualizaron `DECISIONES.md` y `README.md` con el estado real y se registraron dos fallos detectados durante las verificaciones, corregidos antes de finalizar.
+
+**Decisión tomada (modificado):** aceptar la separación Client/Server y los enlaces solicitados, pero cambiar dos detalles de la primera implementación al detectar un fallo de ESLint y otro de compilación; no adelantar rutas ni el experimento de Network.
+
+**Justificación:** el Navbar requiere estado de menú y lectura de la URL, mientras que el Footer no requiere interactividad. Corregir los problemas reales permite cumplir las verificaciones sin desactivar ESLint ni `cacheComponents` y sin convertir innecesariamente el Footer en cliente.
+
+**Caso real 1 — estado del menú (código inicial rechazado por ESLint):**
+
+Antes:
+
+```tsx
+const [menuOpen, setMenuOpen] = useState(false);
+useEffect(() => {
+  setMenuOpen(false);
+}, [pathname]);
+```
+
+Después:
+
+```tsx
+function Navbar() {
+  const pathname = usePathname();
+  return <NavbarContent key={pathname} pathname={pathname} />;
+}
+
+function NavbarContent({ pathname }: { pathname: string }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  // El botón abre o cierra el menú y los enlaces lo cierran al hacer clic.
+}
+```
+
+`npx eslint .` detectó `react-hooks/set-state-in-effect` al actualizar estado de forma síncrona dentro de `useEffect`. El estado del menú reside en un componente identificado por la ruta: al cambiar `pathname`, React lo reinicia incluso si se navega con el historial. El botón y los enlaces lo actualizan mediante eventos.
+
+**Caso real 2 — año del Footer (compilación inicial fallida):**
+
+Antes:
+
+```tsx
+© {new Date().getFullYear()} IKOMI PERÚ. Todos los derechos reservados.
+```
+
+Después:
+
+```tsx
+async function getCurrentYear() {
+  "use cache";
+  cacheLife("days");
+  return new Date().getFullYear();
+}
+// Footer obtiene el año con: const year = await getCurrentYear();
+```
+
+`npm run build` compiló el código inicial pero falló al prerenderizar `/_not-found`: Next.js 16.4.4 con `cacheComponents` rechaza `new Date()` directamente en un Server Component prerenderizado. La función cacheada hace determinista el valor para el prerender y lo revalida diariamente; se siguió la guía de Next.js para valores de tiempo en Cache Components.
+
+**Verificaciones finales:** tras las correcciones, `npm run build` completó la compilación, la comprobación de TypeScript y la generación estática de `/` y `/_not-found`; `npx eslint .` terminó sin errores ni mensajes. Next.js mantuvo la advertencia no bloqueante sobre el `package-lock.json` externo en `Documents`. Recuento de los archivos de código modificados o creados: `components/layout/Navbar.tsx` (100 líneas), `components/layout/Footer.tsx` (55), `app/layout.tsx` (28) y `app/page.tsx` (24). No se dispone en esta sesión de un navegador con inspección visual para comprobar manualmente menú de escritorio y móvil, y no se realizó el experimento de DevTools Network ni se generaron capturas nuevas.

@@ -14,9 +14,9 @@ La aplicación utilizará componentes reutilizables, navegación entre páginas,
 
 ### Estado del proyecto
 
-Actualmente se ha completado la configuración inicial de Next.js, la documentación técnica, la preparación del repositorio Git y la primera prueba de compilación. La ruta `/` muestra una portada temporal con colores corporativos, fuente Geist y metadatos generales de IKOMI PERÚ.
+Actualmente se ha completado la configuración inicial de Next.js y la identidad visual base. La ruta `/` muestra una portada temporal con colores corporativos, fuente Geist y metadatos generales de IKOMI PERÚ. Navbar y Footer ya están integrados en el layout raíz.
 
-Las páginas corporativas y los componentes personalizados se implementarán progresivamente, registrando cada avance mediante commits descriptivos en GitHub.
+Las páginas corporativas y los demás componentes se implementarán progresivamente. Los enlaces a rutas pendientes mostrarán la respuesta predeterminada para rutas inexistentes hasta que existan esas páginas.
 
 ## 2. Tecnologías utilizadas
 
@@ -100,6 +100,11 @@ ikomi-next-ushinahua/
 │   ├── layout.tsx
 │   └── page.tsx
 │
+├── components/
+│   └── layout/
+│       ├── Footer.tsx
+│       └── Navbar.tsx
+│
 ├── public/
 │   ├── file.svg
 │   ├── globe.svg
@@ -143,18 +148,18 @@ La ruta dinámica de productos utilizará datos locales y permitirá consultar l
 
 ## 7. Componentes reutilizables
 
-El desarrollo contempla los siguientes componentes:
+Estos son los componentes implementados y los que siguen pendientes:
 
-| Componente | Funcionalidad prevista |
-|---|---|
-| Navbar | Barra de navegación con enlaces activos y menú responsive. |
-| Footer | Pie de página con información corporativa y enlaces. |
-| Hero | Banner principal reutilizable para presentar secciones. |
-| ProductCard | Tarjeta de producto que recibe información mediante props. |
-| SectionTitle | Títulos reutilizables para las diferentes secciones. |
-| ContactForm | Formulario visual para la página de contacto. |
+| Componente | Estado | Función |
+|---|---|---|
+| Navbar | Implementado (Client Component) | Enlaces con `Link`, enlace activo con `usePathname` y menú móvil. |
+| Footer | Implementado (Server Component) | Descripción corporativa, enlaces y año de copyright. |
+| Hero | Pendiente | Banner principal reutilizable para presentar secciones. |
+| ProductCard | Pendiente | Tarjeta de producto que recibe información mediante props. |
+| SectionTitle | Pendiente | Títulos reutilizables para las diferentes secciones. |
+| ContactForm | Pendiente | Formulario visual para la página de contacto. |
 
-Estos componentes todavía están pendientes de implementación.
+No se han añadido datos de contacto no verificados al Footer.
 
 ## 8. Árbol de componentes
 
@@ -162,7 +167,9 @@ Estos componentes todavía están pendientes de implementación.
 
 ```text
 RootLayout (Server Component)
-└── HomePage (Server Component; portada temporal)
+├── Navbar (Client Component)
+├── HomePage (Server Component; portada temporal)
+└── Footer (Server Component)
 ```
 
 El layout raíz está definido en `app/layout.tsx` y la página principal en `app/page.tsx`.
@@ -171,8 +178,8 @@ El layout raíz está definido en `app/layout.tsx` y la página principal en `ap
 
 ```text
 RootLayout (Server Component)
-├── Navbar (Client Component)
-├── Páginas (Server Components)
+├── Navbar (Client Component; implementado)
+├── Páginas corporativas pendientes (Server Components por defecto)
 │   ├── Inicio
 │   │   ├── Hero
 │   │   └── SectionTitle
@@ -184,10 +191,10 @@ RootLayout (Server Component)
 │   ├── Marcas
 │   └── Contacto
 │       └── ContactForm
-└── Footer (Server Component)
+└── Footer (Server Component; implementado)
 ```
 
-**Nota:** este segundo árbol representa la arquitectura prevista. La clasificación definitiva de los componentes se actualizará conforme se implementen.
+**Nota:** este segundo árbol separa componentes existentes de páginas y componentes previstos. La clasificación definitiva de los componentes aún no creados se actualizará conforme se implementen.
 
 ## 9. Estrategia de diseño y estilos
 
@@ -235,9 +242,7 @@ Esto facilita revisar el historial de implementación y demostrar el proceso de 
 
 ## 13. Despliegue
 
-El despliegue de la aplicación está pendiente y se realizará después de implementar y verificar las funcionalidades requeridas.
-
-La plataforma y la dirección pública del sitio se documentarán cuando el despliegue esté completado.
+No se realizará un despliegue en esta evaluación por limitaciones de tiempo.
 
 ## 14. Observaciones técnicas
 

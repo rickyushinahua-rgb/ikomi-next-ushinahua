@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <main className="flex min-h-screen items-center px-5 py-12 sm:px-10">
+    <main className="flex flex-1 items-center px-5 py-12 sm:px-10">
       <section className="mx-auto w-full max-w-5xl overflow-hidden rounded-3xl bg-white shadow-lg">
         <div className="h-2 bg-secondary" aria-hidden="true" />
         <div className="px-7 py-16 sm:px-12 sm:py-20 lg:px-20">
