@@ -40,7 +40,7 @@ Los azules diferencian la identidad de IKOMI PERÚ y el tono oscuro sobre blanco
 
 Se conserva **Geist** mediante `next/font/google`, ya presente en el proyecto. Next.js aloja la fuente con la aplicación para que el navegador no dependa de un CDN de tipografía; `--font-geist-sans` se vincula con `--font-sans` mediante `@theme inline`. Se eliminó Geist Mono porque esta portada no necesita una fuente monoespaciada.
 
-La estrategia es reservar `app/globals.css` para tokens de diseño y estilos globales mínimos (fondo y color del texto), y usar utilidades Tailwind en la portada temporal. Esto evita duplicar colores en las páginas y mantiene los estilos fáciles de identificar y ajustar durante la implementación corporativa posterior.
+La estrategia es reservar `app/globals.css` para tokens de diseño y estilos globales mínimos (fondo y color del texto), y usar utilidades Tailwind en las páginas corporativas. Esto evita duplicar colores en las páginas y mantiene los estilos fáciles de identificar y ajustar durante la implementación posterior.
 
 ## 3. Función de los archivos principales
 
@@ -49,6 +49,8 @@ La estrategia es reservar `app/globals.css` para tokens de diseño y estilos glo
 | `app/layout.tsx` | Define la estructura principal compartida de la aplicación mediante las etiquetas `html` y `body`. Permite cargar estilos globales, configurar fuentes y mostrar las páginas mediante `children`. También permite establecer metadatos generales. |
 | `app/page.tsx` | Representa la ruta `/`; ahora muestra Inicio con contenido corporativo y metadatos específicos. |
 | `app/nosotros/page.tsx` | Define `/nosotros` con sus propios metadatos y los valores publicados en la referencia corporativa. |
+| `app/servicios/page.tsx` | Define `/servicios` con cuatro áreas y un proceso de solicitud basados en las páginas de IKOMI consultadas. |
+| `app/marcas/page.tsx` | Define `/marcas` y presenta ocho nombres confirmados sin reproducir logotipos ajenos. |
 | `app/globals.css` | Contiene los estilos globales del proyecto y permite establecer variables visuales reutilizables, como colores y tipografía. |
 | `public/` | Almacena recursos estáticos como imágenes, logotipos e íconos. Los archivos pueden utilizarse desde las páginas y componentes mediante rutas públicas. |
 | `next.config.ts` | Permite configurar el comportamiento de Next.js y establecer opciones relacionadas con la compilación y otras características del framework. |
@@ -82,7 +84,7 @@ Para desarrollar el sitio corporativo IKOMI PERÚ, Next.js ofrece ventajas relac
 
 Next.js permite configurar títulos y descripciones individuales para cada página mediante la API de metadatos.
 
-Esto resulta útil para IKOMI PERÚ porque sus secciones de productos, servicios y contacto podrán contar con información específica para los motores de búsqueda.
+Esto resulta útil para IKOMI PERÚ: Servicios ya tiene metadatos propios y Productos y Contacto podrán tenerlos cuando se implementen.
 
 Por ejemplo, la página `/productos` podrá tener un título como *Productos y Repuestos | IKOMI PERÚ*, acompañado de una descripción de su catálogo.
 
@@ -94,7 +96,7 @@ Next.js con App Router utiliza Server Components por defecto.
 
 Esto permite preparar el contenido de las páginas informativas en el servidor y entregar HTML al navegador sin necesidad de ejecutar toda la lógica de presentación en el cliente.
 
-En IKOMI PERÚ, páginas como Nosotros, Servicios y Marcas podrán utilizar esta característica porque principalmente mostrarán contenido informativo.
+En IKOMI PERÚ, Nosotros, Servicios y Marcas utilizan esta característica porque principalmente muestran contenido informativo.
 
 ### 5.3. Rendimiento y optimización
 
@@ -126,9 +128,9 @@ Si posteriormente se incorporan secciones con diseños independientes, se podrá
 
 ### 6.3. Navegación y límite entre cliente y servidor
 
-`components/layout/Navbar.tsx` es un **Client Component** porque necesita `usePathname()` para identificar la ruta activa y `useState` para abrir y cerrar el menú móvil. La directiva `"use client"` se limita a ese archivo: `app/layout.tsx`, Inicio, Nosotros y `components/layout/Footer.tsx` permanecen como Server Components.
+`components/layout/Navbar.tsx` es un **Client Component** porque necesita `usePathname()` para identificar la ruta activa y `useState` para abrir y cerrar el menú móvil. La directiva `"use client"` se limita a ese archivo: `app/layout.tsx`, las páginas informativas y `components/layout/Footer.tsx` permanecen como Server Components.
 
-Los enlaces internos utilizan `Link` de `next/link` para aprovechar la navegación del App Router sin forzar una recarga completa en rutas disponibles. `usePathname` permite aplicar `aria-current="page"` y estilos al enlace activo; en rutas de detalle, el prefijo `/productos/` mantendrá resaltada la sección Productos. El menú se cierra al seleccionar un enlace y se muestra cerrado si cambia la ruta. Por ahora solo Inicio y Nosotros están implementadas; las demás rutas enlazadas mostrarán la respuesta predeterminada para rutas inexistentes.
+Los enlaces internos utilizan `Link` de `next/link` para aprovechar la navegación del App Router sin forzar una recarga completa en rutas disponibles. `usePathname` permite aplicar `aria-current="page"` y estilos al enlace activo; en rutas de detalle, el prefijo `/productos/` mantendrá resaltada la sección Productos. El menú se cierra al seleccionar un enlace y se muestra cerrado si cambia la ruta. Inicio, Nosotros, Servicios y Marcas están implementadas; Productos y Contacto todavía mostrarán la respuesta predeterminada para rutas inexistentes.
 
 El **Footer** no requiere hooks, eventos ni APIs del navegador, por lo que no necesita `"use client"`. Incluye una descripción breve y enlaces internos sin atribuir a IKOMI PERÚ datos de contacto no verificados. El año del copyright se calcula en una función de servidor con `"use cache"` y `cacheLife("days")`: con `cacheComponents` activo, leer `new Date()` directamente durante el prerender impide compilar; el valor cacheado puede actualizarse con la revalidación diaria.
 
@@ -143,6 +145,14 @@ Cada ruta vive en su propio `page.tsx` y exporta `metadata` específica. Las tar
 Se utiliza `next/image` con `fill`, contenedores con proporción, `sizes` y `alt` descriptivo; el Hero usa `preload` para su imagen principal, como recomienda la guía de Next.js 16 para imágenes visibles al cargar. `next.config.ts` limita `images.remotePatterns` a seis fotografías concretas de `images.pexels.com`, verificadas como JPEG y servidas por el optimizador local. La [licencia de Pexels](https://www.pexels.com/license/) permite su uso en un sitio web; el README atribuye a los autores. No se presentan como fotografías oficiales de IKOMI PERÚ ni se reprodujo un logotipo.
 
 La información sobre importación y venta de repuestos para camiones y buses, sus categorías y los valores Respeto, Compromiso, Superación y Adaptabilidad se contrastó con [Inicio](https://www.ikomiperu.com/) y [Nosotros](https://ikomiperu.com/nosotros) de la referencia. Se evitó incluir cifras, testimonios, misión, visión o historia empresarial en estas páginas.
+
+### 6.5. Servicios y Marcas
+
+`app/servicios/page.tsx` y `app/marcas/page.tsx` son rutas independientes de App Router, cada una con `metadata` propia. Reutilizan Hero y SectionTitle, el layout raíz y las dos fotos ilustrativas de Pexels ya permitidas por `next.config.ts`. No se añadieron hosts, imágenes ni dependencias. Las cuadrículas se adaptan a pantalla móvil y escritorio con utilidades Tailwind y hover discreto con `motion-reduce:transform-none`.
+
+Servicios describe ventas, asesoría, coordinación de entrega y líneas de productos basándose en [Inicio](https://ikomiperu.com/) y [Envíos](https://ikomiperu.com/envios). El texto evita prometer horarios, costos o plazos; el enlace a `/contacto` es una llamada a la acción, pero la página destino aún no está implementada. Los cuatro iconos están en `components/ServiceIcon.tsx` como SVG propios, de tamaño uniforme y `aria-hidden` porque los títulos de cada tarjeta ya nombran su contenido. Los datos de las cuatro tarjetas y de los tres pasos se usan solo en esta página y permanecen cerca de ella.
+
+Marcas presenta Hyundai Mobis, Mando, Valeo, SKF, Gates, GMB, Sangsin y Hi-Q, contrastadas con la [página de Marcas](https://ikomiperu.com/marcas). Su lista se usa en una sola página, por eso no se creó un archivo `data/` adicional. Se optó por nombres tipográficos en lugar de logos no verificados para no atribuir identidad visual falsa ni introducir recursos externos. El enlace a `/productos` apunta a una ruta pendiente y no se presenta como catálogo ya desarrollado.
 
 ## 7. Estado de verificación inicial
 

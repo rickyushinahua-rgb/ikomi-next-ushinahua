@@ -782,3 +782,146 @@ type SectionTitleProps = {
 ```
 
 **Verificaciones de esta interacción:** `npm run build` compiló correctamente `/` y `/nosotros`; `npx eslint .` terminó sin errores ni mensajes. Next.js mostró la advertencia preexistente no bloqueante sobre `package-lock.json` externo en `Documents`. `SectionTitle.tsx` tiene 34 líneas, `app/page.tsx` 113 y `app/nosotros/page.tsx` 188, todos por debajo de 350. Las capturas iniciales fueron proporcionadas por el estudiante; no se realizó una nueva inspección visual posterior ni se alteraron las capturas existentes.
+
+## Entrada 7 — 03/11/2026 — páginas Servicios y Marcas
+
+**Objetivo:** implementar únicamente `/servicios` y `/marcas`, manteniendo el resto de las rutas pendientes y documentando las decisiones reales.
+
+**Prompt utilizado (texto íntegro del usuario; las dos imágenes adjuntas se identifican por su marcador, sin atribuirles origen empresarial):**
+
+```text
+[Image 1] [Image 2] PROYECTO: IKOMI PERÚ — Evaluación 03 de Desarrollo de Aplicaciones Web Avanzado, TECSUP.
+
+CONTEXTO:
+Estamos recreando el sitio corporativo https://www.ikomiperu.com/ mediante Next.js 16.4.4, App Router, TypeScript, Tailwind CSS 4 y ESLint.
+
+Repositorio: https://github.com/rickyushinahua-rgb/ikomi-next-ushinahua
+Rama: main
+La carpeta app/ está en la raíz, sin src/.
+
+ESTADO ACTUAL:
+- Proyecto configurado y documentado.
+- Navbar y Footer integrados en app/layout.tsx.
+- Inicio y Nosotros terminados.
+- Componentes Hero y SectionTitle reutilizables.
+- Identidad visual con azul corporativo, fondos claros y secciones oscuras.
+- next/image y next/font configurados.
+- Corrección de contraste realizada.
+- Siete commits publicados en GitHub.
+- No realizaremos despliegue por limitaciones de tiempo.
+
+OBJETIVO EXCLUSIVO DE ESTA ETAPA:
+Implementar dos páginas corporativas:
+1. /servicios
+2. /marcas
+
+CRITERIOS DEL PROFESOR:
+- Enrutamiento basado en archivos con App Router.
+- Metadata individual para cada página.
+- Reutilización de componentes.
+- Estilos consistentes con Tailwind CSS.
+- Diseño responsive.
+- Uso de imágenes optimizadas con next/image cuando corresponda.
+- Documentación de decisiones y uso de IA.
+- Verificaciones de compilación y ESLint.
+
+REGLAS:
+1. Ningún archivo de código puede superar 350 líneas; preferiblemente menos de 250.
+2. Separar componentes y datos cuando sea conveniente.
+3. Código legible, organizado y sin líneas comprimidas.
+4. No utilizar Pages Router, next/router ni getStaticProps.
+5. Mantener Server Components por defecto.
+6. No agregar dependencias innecesarias.
+7. Reutilizar Hero y SectionTitle si su diseño encaja.
+8. No modificar innecesariamente Inicio, Nosotros, Navbar ni Footer.
+9. No crear todavía Productos, ruta dinámica, Contacto ni not-found.tsx.
+10. No realizar commits, push ni despliegue.
+
+PÁGINA SERVICIOS:
+Crear app/servicios/page.tsx.
+
+Diseño:
+- Encabezado visual atractivo, consistente con las páginas existentes.
+- Título 'Nuestros servicios'.
+- Subtítulo sobre soluciones en repuestos para camiones y buses.
+- Sección de cuatro tarjetas con iconos: Ventas, Asesoría, Delivery y Productos.
+- Utilizar una cuadrícula responsive de dos columnas en escritorio y una en móvil.
+- Tarjetas con buen espaciado, esquinas redondeadas, efectos hover y contraste adecuado.
+- Sección adicional que explique cómo solicitar un repuesto.
+- Llamada a la acción hacia /contacto.
+- Metadata individual.
+
+Contenido:
+- Ventas: comercialización de repuestos automotrices.
+- Asesoría: orientación para encontrar la pieza adecuada.
+- Delivery: coordinación de envíos o recojo según destino.
+- Productos: variedad de líneas de repuestos para diferentes sistemas del vehículo.
+
+La información debe estar respaldada por la referencia IKOMI:
+https://ikomiperu.com/
+https://ikomiperu.com/envios
+
+No inventar plazos de entrega garantizados, costos, datos comerciales ni servicios no confirmados.
+
+ICONOS:
+- Preferir SVG simples propios o iconos disponibles sin dependencias adicionales.
+- Si se usan iconos SVG, deben ser accesibles y tener dimensiones coherentes.
+- No usar emojis como sustituto de iconos corporativos.
+
+PÁGINA MARCAS:
+Crear app/marcas/page.tsx.
+
+Diseño:
+- Título 'Nuestras marcas'.
+- Introducción sobre marcas de repuestos automotrices.
+- Cuadrícula responsive de tarjetas visualmente atractivas.
+- Al menos seis marcas verificadas en la web de IKOMI.
+- Espacios equilibrados, tipografía consistente y hover discreto.
+- Llamada a la acción hacia /productos.
+
+Marcas de referencia confirmadas en ikomiperu.com:
+Hyundai Mobis, Mando, Valeo, SKF, Gates, GMB, Sangsin y Hi-Q.
+
+Referencia:
+https://ikomiperu.com/marcas
+
+LOGOTIPOS:
+- Utilizar únicamente logotipos verdaderos de cada marca cuando existan fuentes accesibles y se permita su uso.
+- No generar logotipos falsos.
+- Si no hay un recurso verificable, mostrar el nombre de la marca con tipografía profesional dentro de la tarjeta.
+- No usar imágenes de marcas que no correspondan.
+- Si se usan imágenes, utilizar next/image con alt y tamaños adecuados.
+
+ORGANIZACIÓN:
+- Si los datos de marcas o servicios se repiten, crear archivos data/servicios.ts o data/marcas.ts.
+- Mantener archivos pequeños, tipados y legibles.
+- No duplicar componentes completos.
+- Usar las variables de colores actuales.
+
+DOCUMENTACIÓN:
+1. Actualizar README.md con las rutas Servicios y Marcas.
+2. Actualizar el árbol de componentes según los archivos realmente creados.
+3. Actualizar DECISIONES.md explicando la estructura, reutilización y decisiones visuales.
+4. Añadir la siguiente entrada real en BITACORA_IA.md con objetivo, prompt íntegro, resumen, decisión y justificación.
+5. Registrar errores de IA únicamente si ocurrieron de verdad.
+6. No afirmar funcionalidades inexistentes.
+
+VERIFICACIONES:
+- Ejecutar npm run build.
+- Ejecutar npx eslint .
+- Comprobar límites de líneas.
+- Confirmar que /servicios y /marcas funcionan.
+- Si no tienes navegador para inspección visual, indícalo expresamente.
+- No inventar resultados.
+
+AL FINALIZAR:
+Mostrar archivos creados y modificados, explicar los cambios, indicar resultados reales de las pruebas y detenerse. No ejecutar git commit ni git push.
+```
+
+**Resumen de la respuesta:** se revisaron la documentación instalada de Next.js 16.4.4 y las páginas Inicio, Envíos y Marcas de la referencia. Se crearon `app/servicios/page.tsx`, `app/marcas/page.tsx` y `components/ServiceIcon.tsx`. Se reutilizaron Hero y SectionTitle, dos fotografías de Pexels previamente permitidas y las variables de colores actuales. Se actualizaron README y DECISIONES con las rutas y componentes realmente implementados, y esta entrada conserva el prompt recibido.
+
+**Decisión tomada (aceptado con ajustes):** implementar las cuatro tarjetas y los pasos de solicitud solo con información respaldada por la referencia; representar ocho marcas confirmadas como texto en vez de reproducir logotipos no autorizados. Los datos se usan una sola vez y permanecen cerca de cada página, mientras los SVG decorativos se extrajeron a un componente pequeño.
+
+**Justificación:** esta organización evita dependencias y archivos de datos que todavía no se reutilizan; la navegación y la tipografía permanecen coherentes con el diseño existente. El contenido sobre recojo y envíos no afirma plazos ni costos, y los enlaces a `/contacto` y `/productos` apuntan a páginas aún pendientes.
+
+**Verificaciones reales:** `npm run build` compiló y generó `/servicios` y `/marcas`; `npx eslint .` terminó sin errores ni mensajes. El servidor de producción local respondió HTTP 200 en ambas rutas con sus títulos en el HTML. Los archivos nuevos tienen 155 líneas (`app/servicios/page.tsx`), 90 (`app/marcas/page.tsx`) y 49 (`components/ServiceIcon.tsx`), todos por debajo de 350. La advertencia preexistente de Next.js sobre el `package-lock.json` externo continuó sin impedir la compilación. No se hizo inspección visual en navegador ni se crearon capturas nuevas; las dos imágenes adjuntas fueron referencias, no activos usados en el sitio.

@@ -14,7 +14,7 @@ La aplicación utilizará componentes reutilizables, navegación entre páginas,
 
 ### Estado del proyecto
 
-La identidad visual base, Navbar y Footer están integrados. Las rutas `/` (Inicio) y `/nosotros` ya presentan contenido corporativo con metadatos propios y componentes reutilizables. Las imágenes son ilustrativas de Pexels: no muestran instalaciones, personal ni productos reales de IKOMI PERÚ.
+La identidad visual base, Navbar y Footer están integrados. Las rutas `/` (Inicio), `/nosotros`, `/servicios` y `/marcas` presentan contenido corporativo con metadatos propios y componentes reutilizables. Las imágenes son ilustrativas de Pexels: no muestran instalaciones, personal ni productos reales de IKOMI PERÚ.
 
 Las demás rutas y componentes se implementarán progresivamente. Los enlaces a rutas pendientes mostrarán la respuesta predeterminada para rutas inexistentes hasta que existan esas páginas.
 
@@ -99,12 +99,17 @@ ikomi-next-ushinahua/
 │   ├── globals.css
 │   ├── layout.tsx
 │   ├── page.tsx
-│   └── nosotros/
+│   ├── marcas/
+│   │   └── page.tsx
+│   ├── nosotros/
+│   │   └── page.tsx
+│   └── servicios/
 │       └── page.tsx
 │
 ├── components/
 │   ├── Hero.tsx
 │   ├── SectionTitle.tsx
+│   ├── ServiceIcon.tsx
 │   └── layout/
 │       ├── Footer.tsx
 │       └── Navbar.tsx
@@ -118,7 +123,15 @@ ikomi-next-ushinahua/
 │
 ├── evidencias/
 │   ├── .gitkeep
-│   └── build-inicial.png
+│   ├── build-inicial.png
+│   ├── etapa3-navbar-footer-desktop.png
+│   ├── etapa3-navbar-mobile.png
+│   ├── etapa4-inicio-desktop.png
+│   ├── etapa4-inicio-secciones.png
+│   ├── etapa4-nosotros-desktop.png
+│   ├── etapa4-nosotros-final.png
+│   ├── etapa4-nosotros-valores.png
+│   └── evidencia-git-etapa2.png
 │
 ├── AGENTS.md
 ├── BITACORA_IA.md
@@ -141,10 +154,10 @@ Estas son las rutas implementadas mediante App Router y las que faltan:
 |---|---|---|
 | Inicio | `/` | Implementada |
 | Nosotros | `/nosotros` | Implementada |
-| Servicios | `/servicios` | Pendiente |
+| Servicios | `/servicios` | Implementada |
 | Productos | `/productos` | Pendiente |
 | Detalle de producto | `/productos/[slug]` | Pendiente |
-| Marcas | `/marcas` | Pendiente |
+| Marcas | `/marcas` | Implementada |
 | Contáctenos | `/contacto` | Pendiente |
 | Página 404 personalizada | `app/not-found.tsx` | Pendiente |
 
@@ -159,6 +172,7 @@ Estos son los componentes implementados y los que siguen pendientes:
 | Navbar | Implementado (Client Component) | Enlaces con `Link`, enlace activo con `usePathname` y menú móvil. |
 | Footer | Implementado (Server Component) | Descripción corporativa, enlaces y año de copyright. |
 | Hero | Implementado (Server Component) | Encabezado con imagen, título, descripción y acciones opcionales. |
+| ServiceIcon | Implementado (Server Component) | Cuatro iconos SVG decorativos para las tarjetas de Servicios. |
 | ProductCard | Pendiente | Tarjeta de producto que recibe información mediante props. |
 | SectionTitle | Implementado (Server Component) | Título, subtítulo y alineación opcional para secciones. |
 | ContactForm | Pendiente | Formulario visual para la página de contacto. |
@@ -178,6 +192,13 @@ RootLayout (Server Component)
 ├── NosotrosPage `/nosotros` (Server Component)
 │   ├── Hero (Server Component)
 │   └── SectionTitle (Server Component)
+├── ServiciosPage `/servicios` (Server Component)
+│   ├── Hero (Server Component)
+│   ├── SectionTitle (Server Component)
+│   └── ServiceIcon (Server Component)
+├── MarcasPage `/marcas` (Server Component)
+│   ├── Hero (Server Component)
+│   └── SectionTitle (Server Component)
 └── Footer (Server Component)
 ```
 
@@ -189,11 +210,9 @@ El layout raíz está definido en `app/layout.tsx` y la página principal en `ap
 RootLayout (Server Component)
 ├── Navbar (Client Component; implementado)
 ├── Páginas pendientes (Server Components por defecto)
-│   ├── Servicios
 │   ├── Productos
 │   │   └── ProductCard
 │   ├── Detalle de producto
-│   ├── Marcas
 │   └── Contacto
 │       └── ContactForm
 └── Footer (Server Component; implementado)
@@ -207,14 +226,14 @@ Se utiliza **Tailwind CSS** como estrategia principal para la estilización de l
 
 La identidad visual base ya utiliza `@theme` de Tailwind CSS 4 en `app/globals.css`: azul principal `#143F77`, azul secundario `#2169B0`, texto oscuro `#152235`, fondo `#F3F6FA` y blanco `#FFFFFF`. Geist se aplica globalmente con `next/font`, sin carga de la fuente desde un CDN en el navegador.
 
-Inicio y Nosotros ya utilizan `next/image` con texto alternativo, contenedores proporcionados y `sizes`; las tarjetas incluyen transiciones hover que respetan la preferencia de movimiento reducido. Las demás páginas se desarrollarán considerando:
+Inicio, Nosotros, Servicios y Marcas reutilizan `Hero` con `next/image`, texto alternativo y `sizes`; Servicios y Marcas usan imágenes Pexels ya atribuidas en la tabla siguiente. Las tarjetas incluyen transiciones hover que respetan la preferencia de movimiento reducido. Las demás páginas se desarrollarán considerando:
 
 - Reutilización de los colores y la tipografía ya centralizados.
 - Imágenes optimizadas con `next/image` cuando corresponda.
 - Distribución adaptable a pantallas móviles, tabletas y computadoras.
 - Transiciones visuales que mejoren la interacción.
 
-Las comprobaciones visuales de diseño responsive a **375 px, 768 px y 1280 px** están pendientes; aún no hay capturas de esas resoluciones.
+La comprobación completa de al menos dos páginas por ancho a **375 px, 768 px y 1280 px** sigue pendiente. Existen capturas previas de escritorio y del menú móvil, pero no documentan toda esa matriz de anchos.
 
 ### Imágenes ilustrativas y atribución
 
