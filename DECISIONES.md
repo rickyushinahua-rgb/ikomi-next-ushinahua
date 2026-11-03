@@ -1,13 +1,126 @@
-# Decisiones técnicas — borrador para revisión del estudiante
+# DECISIONES TÉCNICAS DEL PROYECTO IKOMI PERÚ
 
-Estas justificaciones son propuestas basadas en la configuración observada del repositorio de IKOMI PERÚ; el estudiante debe validarlas y ajustarlas a sus motivos reales antes de presentar la evaluación.
+## 1. Introducción
 
-| Opción elegida | Alternativa descartada | Justificación propuesta |
-| --- | --- | --- |
-| TypeScript | JavaScript sin tipado estático | Para IKOMI PERÚ, tipar los datos y las propiedades de futuras secciones corporativas puede detectar errores durante el desarrollo.<br>También hace más legibles los contratos entre archivos cuando se amplíe el sitio de IKOMI PERÚ. |
-| Tailwind CSS | CSS tradicional escrito íntegramente a mano | Para IKOMI PERÚ, las clases utilitarias facilitan mantener una apariencia coherente entre futuras secciones del sitio.<br>Permiten ajustar estilos responsivos de IKOMI PERÚ sin crear una hoja de estilos nueva para cada cambio pequeño. |
-| `app/` en la raíz, sin `src/` | Crear una carpeta `src/` adicional | Para IKOMI PERÚ, la estructura actual mantiene cerca de la configuración los archivos de rutas del proyecto inicial.<br>Evita una capa de carpetas innecesaria en esta etapa y facilita ubicar `app/layout.tsx` y `app/page.tsx`. |
-| App Router | Pages Router | Para IKOMI PERÚ, el enrutamiento basado en `app/` permite compartir el diseño raíz y preparar metadatos para las rutas corporativas futuras.<br>Sus Server Components por defecto permiten planificar contenido informativo sin trasladar toda su lógica al navegador. |
-| ESLint | No usar un analizador estático (o sustituirlo por otra herramienta) | Para IKOMI PERÚ, revisar el código con ESLint ayuda a mantener convenciones consistentes a medida que crezca el proyecto.<br>El script `npm run lint` facilita detectar problemas antes de entregar nuevas secciones de IKOMI PERÚ. |
+El presente documento describe y justifica las decisiones técnicas tomadas durante la configuración y desarrollo del sitio web corporativo IKOMI PERÚ, utilizando Next.js con App Router.
 
-Las alternativas de la tabla son comparaciones para argumentar la elección, no un registro de configuraciones instaladas o probadas. La implementación corporativa aún no existe.
+Estas decisiones buscan facilitar la organización del código, la reutilización de componentes, el mantenimiento del proyecto y la implementación de una interfaz moderna y adaptable a diferentes dispositivos.
+
+## 2. Decisiones de configuración del proyecto
+
+| Opción elegida | Alternativa descartada | Justificación |
+|---|---|---|
+| **TypeScript** | JavaScript | Se eligió TypeScript porque permite definir tipos de datos para productos, componentes y propiedades, reduciendo posibles errores durante el desarrollo. Además, facilita el mantenimiento del sitio IKOMI PERÚ conforme se incorporen nuevas páginas y funcionalidades. |
+| **Tailwind CSS** | CSS Modules y Bootstrap | Se eligió Tailwind CSS porque permite crear interfaces personalizadas utilizando clases de utilidad y facilita el diseño responsive. Para IKOMI PERÚ resulta conveniente porque ofrece flexibilidad para adaptar colores, espacios y componentes a la referencia visual sin depender de estilos prediseñados. |
+| **Carpeta `app/` en la raíz** | Utilizar `src/` | Se decidió mantener la carpeta `app/` directamente en la raíz porque permite localizar fácilmente las páginas, rutas y archivos principales. Como el proyecto tiene una estructura inicial sencilla, no es necesario agregar otro nivel de carpetas. |
+| **App Router** | Pages Router | Se eligió App Router porque permite organizar las rutas mediante carpetas, compartir diseños mediante layouts y definir metadatos por página. Además, facilita el uso de Server Components para presentar información corporativa de IKOMI PERÚ. |
+| **ESLint** | No utilizar herramientas de análisis estático | Se eligió ESLint porque permite detectar problemas de calidad y mantener buenas prácticas de programación. Esto facilita desarrollar componentes ordenados, legibles y consistentes durante las diferentes etapas del proyecto. |
+
+### 2.1. Justificación de Tailwind CSS frente a otras alternativas
+
+**Tailwind CSS frente a CSS Modules:** Tailwind permite aplicar estilos directamente mediante clases de utilidad, reduciendo la necesidad de crear archivos CSS independientes para cada componente. Esto facilita mantener una apariencia uniforme en las secciones de IKOMI PERÚ.
+
+**Tailwind CSS frente a Bootstrap:** Bootstrap ofrece componentes y estilos prediseñados, mientras que Tailwind brinda mayor flexibilidad para personalizar la interfaz. Por este motivo, Tailwind resulta conveniente para recrear las características visuales del sitio corporativo sin depender de una apariencia predeterminada.
+
+Además, Tailwind facilita implementar diseños adaptables a diferentes resoluciones mediante sus variantes responsive.
+
+## 3. Función de los archivos principales
+
+| Archivo o carpeta | Función dentro del proyecto |
+|---|---|
+| `app/layout.tsx` | Define la estructura principal compartida de la aplicación mediante las etiquetas `html` y `body`. Permite cargar estilos globales, configurar fuentes y mostrar las páginas mediante `children`. También permite establecer metadatos generales. |
+| `app/page.tsx` | Representa la página principal de la aplicación, correspondiente a la ruta `/`. En este archivo se desarrollará la portada corporativa de IKOMI PERÚ. |
+| `app/globals.css` | Contiene los estilos globales del proyecto y permite establecer variables visuales reutilizables, como colores y tipografía. |
+| `public/` | Almacena recursos estáticos como imágenes, logotipos e íconos. Los archivos pueden utilizarse desde las páginas y componentes mediante rutas públicas. |
+| `next.config.ts` | Permite configurar el comportamiento de Next.js y establecer opciones relacionadas con la compilación y otras características del framework. |
+| `package.json` | Contiene las dependencias, información del proyecto y scripts utilizados para ejecutar y compilar la aplicación. |
+
+## 4. Función de los comandos de Next.js
+
+### `npm run dev`
+
+Inicia el servidor de desarrollo de Next.js y permite visualizar los cambios realizados en el proyecto durante la programación.
+
+La aplicación puede consultarse localmente en `http://localhost:3000`.
+
+### `npm run build`
+
+Genera una compilación optimizada para producción y permite comprobar que el proyecto puede compilarse correctamente.
+
+Este comando se utilizó durante la configuración inicial de IKOMI PERÚ y finalizó sin errores, como se muestra en la evidencia correspondiente.
+
+### `npm run start`
+
+Inicia la aplicación utilizando la compilación de producción generada previamente mediante `npm run build`.
+
+Permite ejecutar el sitio en modo de producción.
+
+## 5. Ventajas de Next.js frente a una SPA de React con Vite
+
+Para desarrollar el sitio corporativo IKOMI PERÚ, Next.js ofrece ventajas relacionadas con el posicionamiento en buscadores, el renderizado y el rendimiento.
+
+### 5.1. Posicionamiento en buscadores (SEO)
+
+Next.js permite configurar títulos y descripciones individuales para cada página mediante la API de metadatos.
+
+Esto resulta útil para IKOMI PERÚ porque sus secciones de productos, servicios y contacto podrán contar con información específica para los motores de búsqueda.
+
+Por ejemplo, la página `/productos` podrá tener un título como *Productos y Repuestos | IKOMI PERÚ*, acompañado de una descripción de su catálogo.
+
+En una SPA tradicional desarrollada con React y Vite, la gestión del contenido inicial y los metadatos por ruta puede requerir configuraciones adicionales.
+
+### 5.2. Renderizado en el servidor
+
+Next.js con App Router utiliza Server Components por defecto.
+
+Esto permite preparar el contenido de las páginas informativas en el servidor y entregar HTML al navegador sin necesidad de ejecutar toda la lógica de presentación en el cliente.
+
+En IKOMI PERÚ, páginas como Nosotros, Servicios y Marcas podrán utilizar esta característica porque principalmente mostrarán contenido informativo.
+
+### 5.3. Rendimiento y optimización
+
+Next.js proporciona herramientas como `next/image` para optimizar imágenes y `next/font` para gestionar fuentes tipográficas.
+
+Estas características pueden contribuir a mejorar la carga del sitio corporativo, especialmente cuando se incorporen imágenes de productos, marcas y banners.
+
+Asimismo, mantener como Server Components las secciones que no necesitan interactividad puede reducir el JavaScript enviado al navegador.
+
+Estas son ventajas técnicas del framework; todavía no representan mediciones de rendimiento realizadas sobre la versión corporativa terminada.
+
+## 6. Organización del proyecto y decisiones de arquitectura
+
+### 6.1. Uso de layouts
+
+Actualmente, el proyecto utiliza `app/layout.tsx` como layout raíz.
+
+Este archivo permitirá compartir elementos comunes como Navbar, Footer, estilos globales y tipografía.
+
+El uso de layouts anidados se evaluará cuando se implemente el catálogo de productos. Inicialmente, no se considera necesario agregar un layout exclusivo para `/productos`, debido a que las páginas del catálogo pueden compartir el diseño general.
+
+### 6.2. Uso de Route Groups
+
+Por el momento, no se utilizarán Route Groups como `(marketing)`.
+
+Las páginas corporativas de IKOMI PERÚ pertenecen a una misma estructura visual, por lo que mantener rutas directas facilita comprender su organización.
+
+Si posteriormente se incorporan secciones con diseños independientes, se podrá reconsiderar esta decisión.
+
+## 7. Estado de verificación inicial
+
+Durante la configuración inicial del proyecto se realizaron las siguientes comprobaciones:
+
+- Se creó el proyecto mediante `create-next-app`.
+- Se confirmó el uso de Next.js 16.4.4 con App Router.
+- Se verificó que la carpeta `app/` se encuentra en la raíz.
+- Se ejecutó `npm run dev` y la página principal respondió correctamente.
+- Se ejecutó `npm run build` y la compilación finalizó sin errores.
+- Se guardó la captura correspondiente en `evidencias/build-inicial.png`.
+- Se inicializó Git y se publicó el proyecto en GitHub.
+
+## 8. Conclusión
+
+Las decisiones de configuración permiten establecer una base organizada para desarrollar el sitio web corporativo IKOMI PERÚ.
+
+La combinación de Next.js, TypeScript y Tailwind CSS facilita la implementación progresiva de páginas, componentes reutilizables y estilos adaptables.
+
+Asimismo, el uso de App Router permite organizar la navegación y aprovechar las capacidades de renderizado y metadatos del framework, mientras que ESLint contribuye al mantenimiento de la calidad del código.
