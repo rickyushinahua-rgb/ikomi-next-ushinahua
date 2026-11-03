@@ -85,12 +85,13 @@ export default function NosotrosPage() {
         </div>
       </section>
 
-      <section className="px-5 py-16 sm:px-10 lg:py-24">
+      <section className="bg-dark px-5 py-16 sm:px-10 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <SectionTitle
             subtitle="Nuestros valores"
             title="Principios que orientan nuestro trabajo"
             align="center"
+            variant="light"
           />
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {values.map(({ title, description }) => (

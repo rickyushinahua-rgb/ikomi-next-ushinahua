@@ -716,3 +716,69 @@ Al finalizar mostrar archivos creados y modificados, verificaciones reales y exp
 **Justificación:** Hero y SectionTitle evitan duplicar presentación entre dos Server Components. `next/image` requiere permitir explícitamente la fuente remota; seis URLs exactas reducen el alcance de la configuración. Los valores Respeto, Compromiso, Superación y Adaptabilidad sí constan en la página de referencia Nosotros. Las fotos de stock se identifican como ilustrativas, y el README conserva la autoría y la licencia.
 
 **Comprobaciones realizadas:** `npm run build` y `npx eslint .` terminaron sin errores; la compilación incluyó `/` y `/nosotros`. Los seis enlaces directos de Pexels respondieron como JPEG con estado HTTP 200 (HEAD). El servidor de producción local respondió 200 en ambas rutas y la optimización local de Next.js entregó las seis imágenes con estado 200 y `image/jpeg`. Los archivos de código creados o modificados tienen 76 líneas (`components/Hero.tsx`), 24 (`components/SectionTitle.tsx`), 112 (`app/page.tsx`), 187 (`app/nosotros/page.tsx`) y 30 (`next.config.ts`), todos por debajo de 350. Esto verifica respuesta HTTP, no una inspección visual en navegador; no se crearon capturas nuevas.
+
+## Entrada 6 — 03/11/2026 — contraste de títulos de sección
+
+**Objetivo:** corregir el contraste de los títulos y subtítulos de las secciones oscuras de Inicio y Nosotros detectado en las dos capturas compartidas por el estudiante.
+
+**Prompt utilizado (texto completo; las imágenes adjuntas se identifican sin transcribir sus píxeles):**
+
+```text
+PROYECTO: IKOMI PERÚ — Next.js 16.4.4, App Router, TypeScript y Tailwind CSS 4.
+
+Necesito corregir exclusivamente un problema de contraste detectado mediante revisión visual.
+
+PROBLEMA:
+En las páginas Inicio (/) y Nosotros (/nosotros), los títulos de las secciones oscuras aparecen en azul oscuro sobre fondo negro.
+
+SECCIONES AFECTADAS:
+- Inicio: Líneas de repuestos, título 'Piezas para diferentes sistemas del vehículo'.
+- Nosotros: Nuestros valores, título 'Principios que orientan nuestro trabajo'.
+
+TAREAS:
+1. Revisar components/SectionTitle.tsx y cómo se utiliza en ambas páginas.
+2. Incorporar una prop opcional y tipada, por ejemplo variant='light' | 'dark', si facilita reutilizar el componente.
+3. En secciones oscuras, mostrar el título principal en blanco y el subtítulo en un tono claro con contraste suficiente.
+4. Mantener el color azul principal en las secciones de fondo blanco.
+5. No modificar innecesariamente Hero, Navbar ni Footer.
+6. No modificar imágenes, contenido ni distribución general.
+7. Mantener cada archivo de código con máximo 350 líneas.
+8. Actualizar BITACORA_IA.md para registrar este problema real detectado visualmente, mostrando antes y después y explicando la corrección. No inventar pruebas.
+9. Ejecutar npm run build y npx eslint .
+10. No hacer commit ni push.
+
+Al finalizar, indicar archivos modificados y resultados de las verificaciones. Detenerse. [Image 1] [Image 2]
+```
+
+**Resumen de la respuesta:** se revisó `SectionTitle.tsx` y su uso en ambas páginas. El componente siempre fijaba `text-primary` y `text-secondary`, incluso en las secciones que el estudiante mostró con fondo oscuro. Se incorporó `variant="light"` solo en esas dos secciones, se declaró `bg-dark` para que su fondo sea explícito y se aclaró el texto de la nota ilustrativa de Inicio. El resto de las secciones conserva los colores originales.
+
+**Decisión tomada (modificado):** aceptar la observación visual y ajustar la variante del componente compartido en lugar de duplicar títulos o cambiar Hero, Navbar y Footer. Mantener el valor por defecto `variant="dark"` en secciones blancas.
+
+**Justificación:** un mismo componente se reutiliza sobre fondos claros y oscuros. La elección de color debe responder al contexto visual; `text-white` y `text-white/80` sobre `bg-dark` evitan el azul oscuro ilegible, mientras `text-primary` y `text-secondary` continúan sobre blanco. Declarar el fondo evita depender de cómo se vea el fondo heredado en el navegador.
+
+**Antes (código real):**
+
+```tsx
+<p className="mb-3 text-sm font-semibold uppercase tracking-widest text-secondary">
+  {subtitle}
+</p>
+<h2 className="text-3xl font-bold tracking-tight text-primary sm:text-4xl">
+  {title}
+</h2>
+// En Inicio y Nosotros: <section className="px-5 py-16 sm:px-10 lg:py-24">
+```
+
+**Después (código aplicado):**
+
+```tsx
+type SectionTitleProps = {
+  variant?: "dark" | "light";
+  // Otras props existentes: title, subtitle, align.
+};
+// variant === "light" ? "text-white/80" : "text-secondary" (subtítulo)
+// variant === "light" ? "text-white" : "text-primary" (título)
+// En ambas secciones: <section className="bg-dark px-5 py-16 ...">
+// En ambos usos: <SectionTitle variant="light" ... />
+```
+
+**Verificaciones de esta interacción:** `npm run build` compiló correctamente `/` y `/nosotros`; `npx eslint .` terminó sin errores ni mensajes. Next.js mostró la advertencia preexistente no bloqueante sobre `package-lock.json` externo en `Documents`. `SectionTitle.tsx` tiene 34 líneas, `app/page.tsx` 113 y `app/nosotros/page.tsx` 188, todos por debajo de 350. Las capturas iniciales fueron proporcionadas por el estudiante; no se realizó una nueva inspección visual posterior ni se alteraron las capturas existentes.

@@ -76,12 +76,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="px-5 py-16 sm:px-10 lg:py-24">
+      <section className="bg-dark px-5 py-16 sm:px-10 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <SectionTitle
             subtitle="Líneas de repuestos"
             title="Piezas para diferentes sistemas del vehículo"
             align="center"
+            variant="light"
           />
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {areas.map(({ title, description }) => (
@@ -101,7 +102,7 @@ export default function Home() {
               </article>
             ))}
           </div>
-          <p className="mt-7 text-center text-sm text-dark/70">
+          <p className="mt-7 text-center text-sm text-white/80">
             Fotografías ilustrativas de Pexels; no muestran instalaciones ni
             productos de IKOMI PERÚ.
           </p>
