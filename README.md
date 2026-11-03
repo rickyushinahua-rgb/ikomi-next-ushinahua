@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IKOMI PERÚ — Evaluación 03 de Next.js
 
-## Getting Started
+Base del sitio corporativo de IKOMI PERÚ desarrollada con Next.js 16.4.4 (App Router), React, TypeScript, Tailwind CSS y ESLint. En esta etapa el proyecto conserva la página y los metadatos iniciales de `create-next-app`: todavía no se han implementado páginas ni componentes corporativos. Las decisiones propuestas para revisión del estudiante están en [DECISIONES.md](DECISIONES.md), y el registro de uso de IA en [BITACORA_IA.md](BITACORA_IA.md).
 
-First, run the development server:
+## Requisitos e instalación
+
+- Node.js 20.9 o superior y npm.
+- Desde la raíz del repositorio, instalar las dependencias declaradas en `package-lock.json`:
+
+```bash
+npm ci
+```
+
+## Ejecución
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abrir [http://localhost:3000](http://localhost:3000). `dev` inicia el servidor de desarrollo con actualización de cambios.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Para generar y servir la versión de producción:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+`build` genera la compilación de producción; `start` la sirve y requiere ejecutar `build` previamente. La comprobación de estilo disponible es `npm run lint` (ESLint).
 
-To learn more about Next.js, take a look at the following resources:
+## Archivos y carpetas principales
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Ruta | Función actual |
+| --- | --- |
+| `app/layout.tsx` | Diseño raíz compartido por las rutas: define `<html>` y `<body>`, carga `app/globals.css` y las fuentes Geist, inserta cada página mediante `children` y exporta metadatos globales. Actualmente el título, la descripción y `lang="en"` siguen siendo los del ejemplo y deberán revisarse cuando se prepare el contenido de IKOMI PERÚ. |
+| `app/page.tsx` | Define la ruta `/`; por ahora muestra la pantalla inicial de Next.js, no una portada corporativa. |
+| `public/` | Guarda archivos estáticos accesibles desde la raíz de la URL (por ejemplo, `public/next.svg` se sirve como `/next.svg`). Actualmente contiene los SVG del proyecto inicial. |
+| `next.config.ts` | Configuración tipada de Next.js; contiene opciones experimentales y una regla de Turbopack para CSS/Tailwind. No define todavía `turbopack.root`. |
+| `package.json` | Declara dependencias y scripts `dev`, `build`, `start` y `lint`. |
+| `evidencias/` | Carpeta reservada para evidencias reales de la evaluación; `.gitkeep` permite mantenerla en Git mientras esté vacía. |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+La carpeta `app/` está en la raíz y no se usa `src/` ni Pages Router.
 
-## Deploy on Vercel
+## ¿Por qué Next.js para IKOMI PERÚ?
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **SEO:** el App Router permite declarar títulos y descripciones con la API de metadatos para que los buscadores identifiquen los contenidos corporativos. En una SPA típica con React/Vite, el HTML inicial suele contener menos contenido y los metadatos por página requieren una solución adicional. La mejora dependerá de completar los metadatos y publicar contenido real; los actuales siguen siendo los del ejemplo.
+- **Renderizado del servidor:** las páginas y diseños son Server Components por defecto. Cuando se creen secciones informativas de IKOMI PERÚ, el servidor podrá preparar su contenido antes de enviarlo al navegador, en vez de depender de que toda la interfaz se construya tras descargar JavaScript como en una SPA cliente típica.
+- **Rendimiento:** enviar menos JavaScript para contenido no interactivo y reservar los Client Components para interacciones puede mejorar la carga inicial; Next.js también ofrece optimizaciones como `next/image`, ya usado en la página de ejemplo. El resultado real deberá medirse una vez exista el sitio corporativo.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Advertencia de raíz de Turbopack
+
+Existe un `package-lock.json` externo en `Documents` además del `package-lock.json` de este repositorio. Si Turbopack advierte que detectó una raíz de trabajo incorrecta o varios archivos de bloqueo, la propuesta para revisión es fijar la raíz **a este proyecto** mediante `turbopack.root` en `next.config.ts`, conservando la regla CSS existente:
+
+```ts
+import path from "node:path";
+
+// Dentro de turbopack, junto a rules:
+root: path.resolve(__dirname),
+```
+
+`root` debe ser una ruta absoluta. Primero conviene comprobar el texto exacto de la advertencia y confirmar si ese archivo externo pertenece a otro proyecto; no se ha modificado la configuración ni eliminado el archivo externo. Referencia: documentación instalada de Next.js en `node_modules/next/dist/docs/01-app/03-api-reference/05-config/01-next-config-js/turbopack.md` (sección «Root directory»).
