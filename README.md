@@ -14,9 +14,9 @@ La aplicación utilizará componentes reutilizables, navegación entre páginas,
 
 ### Estado del proyecto
 
-Actualmente se ha completado la configuración inicial de Next.js y la identidad visual base. La ruta `/` muestra una portada temporal con colores corporativos, fuente Geist y metadatos generales de IKOMI PERÚ. Navbar y Footer ya están integrados en el layout raíz.
+La identidad visual base, Navbar y Footer están integrados. Las rutas `/` (Inicio) y `/nosotros` ya presentan contenido corporativo con metadatos propios y componentes reutilizables. Las imágenes son ilustrativas de Pexels: no muestran instalaciones, personal ni productos reales de IKOMI PERÚ.
 
-Las páginas corporativas y los demás componentes se implementarán progresivamente. Los enlaces a rutas pendientes mostrarán la respuesta predeterminada para rutas inexistentes hasta que existan esas páginas.
+Las demás rutas y componentes se implementarán progresivamente. Los enlaces a rutas pendientes mostrarán la respuesta predeterminada para rutas inexistentes hasta que existan esas páginas.
 
 ## 2. Tecnologías utilizadas
 
@@ -98,9 +98,13 @@ ikomi-next-ushinahua/
 │   ├── favicon.ico
 │   ├── globals.css
 │   ├── layout.tsx
-│   └── page.tsx
+│   ├── page.tsx
+│   └── nosotros/
+│       └── page.tsx
 │
 ├── components/
+│   ├── Hero.tsx
+│   ├── SectionTitle.tsx
 │   └── layout/
 │       ├── Footer.tsx
 │       └── Navbar.tsx
@@ -131,12 +135,12 @@ La carpeta `app/` está ubicada directamente en la raíz del proyecto. Se utiliz
 
 ## 6. Rutas de la aplicación
 
-Las siguientes rutas forman parte de los requisitos de la evaluación y se implementarán mediante el sistema de enrutamiento de Next.js.
+Estas son las rutas implementadas mediante App Router y las que faltan:
 
 | Página | Ruta | Estado |
 |---|---|---|
-| Inicio | `/` | Portada temporal; página corporativa definitiva pendiente |
-| Nosotros | `/nosotros` | Pendiente |
+| Inicio | `/` | Implementada |
+| Nosotros | `/nosotros` | Implementada |
 | Servicios | `/servicios` | Pendiente |
 | Productos | `/productos` | Pendiente |
 | Detalle de producto | `/productos/[slug]` | Pendiente |
@@ -154,9 +158,9 @@ Estos son los componentes implementados y los que siguen pendientes:
 |---|---|---|
 | Navbar | Implementado (Client Component) | Enlaces con `Link`, enlace activo con `usePathname` y menú móvil. |
 | Footer | Implementado (Server Component) | Descripción corporativa, enlaces y año de copyright. |
-| Hero | Pendiente | Banner principal reutilizable para presentar secciones. |
+| Hero | Implementado (Server Component) | Encabezado con imagen, título, descripción y acciones opcionales. |
 | ProductCard | Pendiente | Tarjeta de producto que recibe información mediante props. |
-| SectionTitle | Pendiente | Títulos reutilizables para las diferentes secciones. |
+| SectionTitle | Implementado (Server Component) | Título, subtítulo y alineación opcional para secciones. |
 | ContactForm | Pendiente | Formulario visual para la página de contacto. |
 
 No se han añadido datos de contacto no verificados al Footer.
@@ -168,7 +172,12 @@ No se han añadido datos de contacto no verificados al Footer.
 ```text
 RootLayout (Server Component)
 ├── Navbar (Client Component)
-├── HomePage (Server Component; portada temporal)
+├── HomePage `/` (Server Component)
+│   ├── Hero (Server Component)
+│   └── SectionTitle (Server Component)
+├── NosotrosPage `/nosotros` (Server Component)
+│   ├── Hero (Server Component)
+│   └── SectionTitle (Server Component)
 └── Footer (Server Component)
 ```
 
@@ -179,11 +188,7 @@ El layout raíz está definido en `app/layout.tsx` y la página principal en `ap
 ```text
 RootLayout (Server Component)
 ├── Navbar (Client Component; implementado)
-├── Páginas corporativas pendientes (Server Components por defecto)
-│   ├── Inicio
-│   │   ├── Hero
-│   │   └── SectionTitle
-│   ├── Nosotros
+├── Páginas pendientes (Server Components por defecto)
 │   ├── Servicios
 │   ├── Productos
 │   │   └── ProductCard
@@ -194,7 +199,7 @@ RootLayout (Server Component)
 └── Footer (Server Component; implementado)
 ```
 
-**Nota:** este segundo árbol separa componentes existentes de páginas y componentes previstos. La clasificación definitiva de los componentes aún no creados se actualizará conforme se implementen.
+**Nota:** este segundo árbol representa solo lo pendiente. La clasificación definitiva de los componentes aún no creados se actualizará conforme se implementen.
 
 ## 9. Estrategia de diseño y estilos
 
@@ -202,14 +207,27 @@ Se utiliza **Tailwind CSS** como estrategia principal para la estilización de l
 
 La identidad visual base ya utiliza `@theme` de Tailwind CSS 4 en `app/globals.css`: azul principal `#143F77`, azul secundario `#2169B0`, texto oscuro `#152235`, fondo `#F3F6FA` y blanco `#FFFFFF`. Geist se aplica globalmente con `next/font`, sin carga de la fuente desde un CDN en el navegador.
 
-Las páginas corporativas se desarrollarán considerando:
+Inicio y Nosotros ya utilizan `next/image` con texto alternativo, contenedores proporcionados y `sizes`; las tarjetas incluyen transiciones hover que respetan la preferencia de movimiento reducido. Las demás páginas se desarrollarán considerando:
 
 - Reutilización de los colores y la tipografía ya centralizados.
-- Imágenes optimizadas con `next/image`.
+- Imágenes optimizadas con `next/image` cuando corresponda.
 - Distribución adaptable a pantallas móviles, tabletas y computadoras.
 - Transiciones visuales que mejoren la interacción.
 
-Las pruebas de diseño responsive se realizarán en resoluciones de **375 px, 768 px y 1280 px**.
+Las comprobaciones visuales de diseño responsive a **375 px, 768 px y 1280 px** están pendientes; aún no hay capturas de esas resoluciones.
+
+### Imágenes ilustrativas y atribución
+
+Se utiliza la [licencia de Pexels](https://www.pexels.com/license/), que permite usar estas fotografías en sitios web. Se verificó la respuesta de las URLs directas y del optimizador de Next.js. Las imágenes no representan al personal, almacén o flota de IKOMI PERÚ. En `next.config.ts`, `images.remotePatterns` permite únicamente las seis URL exactas utilizadas.
+
+| Uso | Fotógrafo | Fuente |
+|---|---|---|
+| Hero Inicio (camiones) | Quintin Gellar | [Pexels 2199293](https://www.pexels.com/photo/white-volvo-semi-truck-on-side-of-road-2199293/) |
+| Inicio (turbocompresor) | cottonbro studio | [Pexels 7565164](https://www.pexels.com/photo/close-up-shot-of-a-turbocharger-7565164/) |
+| Hero Nosotros (almacén) | imeenhae | [Pexels 4277794](https://www.pexels.com/photo/photo-of-warehouse-4277794/) |
+| Nosotros (trabajadores de almacén) | Tiger Lily | [Pexels 4480986](https://www.pexels.com/photo/men-standing-in-a-warehouse-talking-4480986/) |
+| Nosotros (estanterías de almacén) | Tiger Lily | [Pexels 4481327](https://www.pexels.com/photo/shelves-in-a-warehouse-4481327/) |
+| Nosotros (camiones junto a un almacén) | Bogdan Krupin | [Pexels 16663692](https://www.pexels.com/photo/trucks-near-warehouse-16663692/) |
 
 ## 10. Documentación técnica
 

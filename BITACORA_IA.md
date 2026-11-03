@@ -567,3 +567,152 @@ async function getCurrentYear() {
 `npm run build` compiló el código inicial pero falló al prerenderizar `/_not-found`: Next.js 16.4.4 con `cacheComponents` rechaza `new Date()` directamente en un Server Component prerenderizado. La función cacheada hace determinista el valor para el prerender y lo revalida diariamente; se siguió la guía de Next.js para valores de tiempo en Cache Components.
 
 **Verificaciones finales:** tras las correcciones, `npm run build` completó la compilación, la comprobación de TypeScript y la generación estática de `/` y `/_not-found`; `npx eslint .` terminó sin errores ni mensajes. Next.js mantuvo la advertencia no bloqueante sobre el `package-lock.json` externo en `Documents`. Recuento de los archivos de código modificados o creados: `components/layout/Navbar.tsx` (100 líneas), `components/layout/Footer.tsx` (55), `app/layout.tsx` (28) y `app/page.tsx` (24). No se dispone en esta sesión de un navegador con inspección visual para comprobar manualmente menú de escritorio y móvil, y no se realizó el experimento de DevTools Network ni se generaron capturas nuevas.
+
+## Entrada 5 — 03/11/2026 — Inicio y Nosotros
+
+**Objetivo:** implementar solo las rutas Inicio y Nosotros con Hero y SectionTitle reutilizables, imágenes funcionales y metadatos propios, sin crear las otras páginas solicitadas en la rúbrica.
+
+**Prompt utilizado (texto íntegro; las dos imágenes adjuntas se identifican como archivos de referencia, no como texto transcrito):**
+
+```text
+[Image 1] [Image 2] PROYECTO: IKOMI PERÚ — Evaluación 03, Desarrollo de Aplicaciones Web Avanzado, TECSUP.
+
+CONTEXTO:
+Estamos desarrollando una recreación académica del sitio corporativo de IKOMI PERÚ:
+https://www.ikomiperu.com/
+Referencia de Nosotros: https://ikomiperu.com/nosotros
+Repositorio: https://github.com/rickyushinahua-rgb/ikomi-next-ushinahua
+
+TECNOLOGÍAS:
+- Next.js 16.4.4
+- React y TypeScript
+- App Router, con app/ en la raíz
+- Tailwind CSS 4
+- next/font y next/image
+- ESLint
+
+ESTADO ACTUAL:
+- Configuración y documentación terminadas.
+- Identidad visual con azul principal, azul secundario, fondo claro y fuente Geist.
+- Navbar responsive con Link, usePathname y menú móvil.
+- Footer integrado en app/layout.tsx.
+- Página Inicio todavía temporal.
+- GitHub con cinco commits publicados.
+- La bitácora registra cuatro entradas y dos errores de código corregidos.
+
+OBJETIVO EXCLUSIVO DE LA ETAPA 4:
+Crear la página corporativa Inicio y la página Nosotros, junto con los componentes reutilizables Hero y SectionTitle.
+
+REQUISITOS DE LA RÚBRICA:
+1. Crear rutas mediante el App Router.
+2. Definir metadata específica por página.
+3. Utilizar componentes reutilizables con props tipadas.
+4. Usar next/image con alt descriptivo y dimensiones adecuadas.
+5. Mantener diseño responsive.
+6. Incorporar transiciones visuales con propósito.
+7. Diferenciar Server Components de Client Components.
+8. Documentar el trabajo en README.md, DECISIONES.md y BITACORA_IA.md.
+
+REGLAS OBLIGATORIAS:
+- Ningún archivo de código debe superar 350 líneas, preferiblemente menos de 250.
+- Código modular, organizado y fácil de explicar.
+- No comprimir código en líneas extensas.
+- No modificar innecesariamente Navbar ni Footer.
+- No instalar librerías adicionales sin justificarlo.
+- Mantener Server Components por defecto.
+- No usar Pages Router, next/router ni getStaticProps.
+- No hacer commits ni push.
+- No realizar despliegue.
+- No crear Servicios, Productos, Marcas ni Contacto todavía.
+- No inventar logotipo oficial, cifras empresariales, testimonios ni información histórica.
+
+ARCHIVOS A CREAR:
+- components/Hero.tsx
+- components/SectionTitle.tsx
+- app/nosotros/page.tsx
+
+ARCHIVOS A MODIFICAR:
+- app/page.tsx
+- app/globals.css únicamente si es necesario
+- next.config.ts únicamente si es indispensable para imágenes remotas
+- README.md
+- DECISIONES.md
+- BITACORA_IA.md
+
+PÁGINA INICIO (/):
+1. Sustituir la portada temporal por una página corporativa visualmente atractiva.
+2. Crear un Hero con título relacionado con repuestos para camiones y buses.
+3. Incorporar una imagen grande de repuestos automotrices o camiones.
+4. Agregar botones 'Conoce nuestros productos' y 'Contáctanos' con Link.
+5. Incorporar una sección breve de presentación de IKOMI PERÚ.
+6. Crear tarjetas o bloques informativos relacionados con su actividad comercial, sin inventar servicios no confirmados.
+7. Utilizar SectionTitle en las secciones.
+8. Mantener espacios equilibrados, fondos alternados, esquinas redondeadas, sombras discretas y efectos hover.
+9. Asegurar que el contenido funcione en móvil, tableta y escritorio.
+10. Configurar metadata de Inicio con título y descripción propios.
+
+PÁGINA NOSOTROS (/nosotros):
+1. Crear app/nosotros/page.tsx.
+2. Configurar metadata individual.
+3. Reutilizar Hero y SectionTitle mediante props.
+4. Presentar información de IKOMI PERÚ basada en la referencia corporativa.
+5. Incorporar bloques de valores: respeto, compromiso, superación y adaptabilidad, si están confirmados en la referencia.
+6. Incluir imágenes relacionadas con el equipo, almacén y distribución de repuestos.
+7. Utilizar tarjetas informativas y una distribución visual profesional.
+8. Incluir un llamado a la acción hacia /contacto.
+9. No inventar misión, visión, años de experiencia ni información empresarial no verificada.
+10. Mantener el estilo coherente con Inicio.
+
+IMÁGENES:
+- Usar next/image obligatoriamente.
+- Preferir imágenes reales de la empresa cuando sean accesibles y su reutilización esté permitida.
+- Para imágenes ilustrativas, utilizar fuentes con licencia apropiada como Unsplash o Pexels y documentar atribución cuando corresponda.
+- Si se utilizan imágenes externas por URL, verificar que sean enlaces directos a imágenes y que carguen realmente.
+- Configurar images.remotePatterns con protocolos y hosts específicos cuando sea necesario, sin permitir indiscriminadamente todos los dominios.
+- No utilizar enlaces a páginas web como src de Image.
+- No utilizar imágenes rotas ni esconder errores con imágenes invisibles.
+- Definir width/height o fill con contenedores de proporción adecuada.
+- Agregar alt descriptivo y sizes cuando corresponda.
+- Si no se dispone de una imagen válida, indicar claramente cuál falta en lugar de inventar un enlace.
+- No descargar ni instalar paquetes de imágenes innecesarios.
+
+COMPONENTE HERO:
+- Debe aceptar props tipadas como title, description, imageSrc, imageAlt y acciones opcionales.
+- Debe ser reutilizable para Inicio y Nosotros.
+- Debe ser visualmente atractivo, responsive y accesible.
+- No agregar 'use client' si no requiere interactividad.
+
+COMPONENTE SECTIONTITLE:
+- Debe aceptar título, subtítulo y alineación opcional.
+- Utilizar estilos consistentes.
+- Mantenerlo como Server Component.
+
+DOCUMENTACIÓN:
+1. Actualizar README.md con las dos rutas y los componentes realmente implementados.
+2. Actualizar el árbol de componentes indicando Server y Client Components.
+3. Añadir a DECISIONES.md las justificaciones de reutilización, next/image y la organización de las páginas.
+4. Registrar la interacción real como entrada 5 en BITACORA_IA.md, con prompt completo, objetivo, resumen, decisión y justificación.
+5. No inventar errores de IA ni pruebas.
+6. Conservar los registros históricos anteriores.
+
+PRUEBAS:
+- npm run build
+- npx eslint .
+- Revisar que ningún archivo de código supere 350 líneas.
+- Comprobar / y /nosotros.
+- Informar si la inspección visual no puede realizarse.
+- Informar si alguna imagen no está disponible.
+
+RESULTADO ESPERADO:
+Dos páginas corporativas atractivas, correctamente estructuradas, con imágenes funcionales, componentes reutilizables y metadata propia, sin desarrollar otras rutas.
+
+Al finalizar mostrar archivos creados y modificados, verificaciones reales y explicación breve. Detenerse y esperar nuevas instrucciones.
+```
+
+**Resumen de la respuesta:** se revisaron las guías instaladas de Next.js 16.4.4 sobre imágenes y metadatos, las referencias públicas de IKOMI PERÚ y la licencia de Pexels. Se crearon Hero, SectionTitle y `/nosotros`, se sustituyó Inicio temporal por una portada corporativa, se incorporaron valores confirmados en la referencia y se limitaron seis URLs de imágenes en `next.config.ts`. README y DECISIONES quedaron actualizados; las dos imágenes adjuntas se usaron solo como orientación visual y no como activos reutilizados.
+
+**Decisión tomada (aceptado con ajustes):** implementar las dos rutas y componentes pedidos, con fotografías ilustrativas licenciadas por Pexels en lugar de presentar como propias imágenes de la empresa cuya autorización de reutilización no se pudo comprobar. No se añadieron otras rutas, datos históricos ni logotipo oficial.
+
+**Justificación:** Hero y SectionTitle evitan duplicar presentación entre dos Server Components. `next/image` requiere permitir explícitamente la fuente remota; seis URLs exactas reducen el alcance de la configuración. Los valores Respeto, Compromiso, Superación y Adaptabilidad sí constan en la página de referencia Nosotros. Las fotos de stock se identifican como ilustrativas, y el README conserva la autoría y la licencia.
+
+**Comprobaciones realizadas:** `npm run build` y `npx eslint .` terminaron sin errores; la compilación incluyó `/` y `/nosotros`. Los seis enlaces directos de Pexels respondieron como JPEG con estado HTTP 200 (HEAD). El servidor de producción local respondió 200 en ambas rutas y la optimización local de Next.js entregó las seis imágenes con estado 200 y `image/jpeg`. Los archivos de código creados o modificados tienen 76 líneas (`components/Hero.tsx`), 24 (`components/SectionTitle.tsx`), 112 (`app/page.tsx`), 187 (`app/nosotros/page.tsx`) y 30 (`next.config.ts`), todos por debajo de 350. Esto verifica respuesta HTTP, no una inspección visual en navegador; no se crearon capturas nuevas.

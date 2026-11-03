@@ -47,7 +47,8 @@ La estrategia es reservar `app/globals.css` para tokens de diseño y estilos glo
 | Archivo o carpeta | Función dentro del proyecto |
 |---|---|
 | `app/layout.tsx` | Define la estructura principal compartida de la aplicación mediante las etiquetas `html` y `body`. Permite cargar estilos globales, configurar fuentes y mostrar las páginas mediante `children`. También permite establecer metadatos generales. |
-| `app/page.tsx` | Representa la ruta `/`; ahora muestra una portada temporal con la identidad visual base, no la página corporativa definitiva. |
+| `app/page.tsx` | Representa la ruta `/`; ahora muestra Inicio con contenido corporativo y metadatos específicos. |
+| `app/nosotros/page.tsx` | Define `/nosotros` con sus propios metadatos y los valores publicados en la referencia corporativa. |
 | `app/globals.css` | Contiene los estilos globales del proyecto y permite establecer variables visuales reutilizables, como colores y tipografía. |
 | `public/` | Almacena recursos estáticos como imágenes, logotipos e íconos. Los archivos pueden utilizarse desde las páginas y componentes mediante rutas públicas. |
 | `next.config.ts` | Permite configurar el comportamiento de Next.js y establecer opciones relacionadas con la compilación y otras características del framework. |
@@ -125,13 +126,23 @@ Si posteriormente se incorporan secciones con diseños independientes, se podrá
 
 ### 6.3. Navegación y límite entre cliente y servidor
 
-`components/layout/Navbar.tsx` es un **Client Component** porque necesita `usePathname()` para identificar la ruta activa y `useState` para abrir y cerrar el menú móvil. La directiva `"use client"` se limita a ese archivo: `app/layout.tsx`, la portada temporal y `components/layout/Footer.tsx` permanecen como Server Components.
+`components/layout/Navbar.tsx` es un **Client Component** porque necesita `usePathname()` para identificar la ruta activa y `useState` para abrir y cerrar el menú móvil. La directiva `"use client"` se limita a ese archivo: `app/layout.tsx`, Inicio, Nosotros y `components/layout/Footer.tsx` permanecen como Server Components.
 
-Los enlaces internos utilizan `Link` de `next/link` para aprovechar la navegación del App Router sin forzar una recarga completa en rutas disponibles. `usePathname` permite aplicar `aria-current="page"` y estilos al enlace activo; en rutas de detalle, el prefijo `/productos/` mantendrá resaltada la sección Productos. El menú se cierra al seleccionar un enlace y se muestra cerrado si cambia la ruta. Las rutas corporativas enlazadas todavía no tienen páginas y mostrarán la respuesta predeterminada para rutas inexistentes hasta su implementación.
+Los enlaces internos utilizan `Link` de `next/link` para aprovechar la navegación del App Router sin forzar una recarga completa en rutas disponibles. `usePathname` permite aplicar `aria-current="page"` y estilos al enlace activo; en rutas de detalle, el prefijo `/productos/` mantendrá resaltada la sección Productos. El menú se cierra al seleccionar un enlace y se muestra cerrado si cambia la ruta. Por ahora solo Inicio y Nosotros están implementadas; las demás rutas enlazadas mostrarán la respuesta predeterminada para rutas inexistentes.
 
 El **Footer** no requiere hooks, eventos ni APIs del navegador, por lo que no necesita `"use client"`. Incluye una descripción breve y enlaces internos sin atribuir a IKOMI PERÚ datos de contacto no verificados. El año del copyright se calcula en una función de servidor con `"use cache"` y `cacheLife("days")`: con `cacheComponents` activo, leer `new Date()` directamente durante el prerender impide compilar; el valor cacheado puede actualizarse con la revalidación diaria.
 
 La comparación de `Link` con `<a href>` mediante DevTools Network y sus capturas quedan pendientes; no se ha realizado ese experimento en esta etapa.
+
+### 6.4. Reutilización, imágenes y organización de Inicio y Nosotros
+
+`components/Hero.tsx` recibe título, descripción, URL de imagen, texto alternativo y acciones opcionales mediante props tipadas. `components/SectionTitle.tsx` recibe título, subtítulo y alineación opcional. Ambos son Server Components y permiten que Inicio y Nosotros compartan presentación sin repetirla ni enviar JavaScript interactivo innecesario al navegador.
+
+Cada ruta vive en su propio `page.tsx` y exporta `metadata` específica. Las tarjetas y textos particulares permanecen cerca de la página que los usa; no se crearon layouts anidados ni route groups porque comparten el diseño raíz actual.
+
+Se utiliza `next/image` con `fill`, contenedores con proporción, `sizes` y `alt` descriptivo; el Hero usa `preload` para su imagen principal, como recomienda la guía de Next.js 16 para imágenes visibles al cargar. `next.config.ts` limita `images.remotePatterns` a seis fotografías concretas de `images.pexels.com`, verificadas como JPEG y servidas por el optimizador local. La [licencia de Pexels](https://www.pexels.com/license/) permite su uso en un sitio web; el README atribuye a los autores. No se presentan como fotografías oficiales de IKOMI PERÚ ni se reprodujo un logotipo.
+
+La información sobre importación y venta de repuestos para camiones y buses, sus categorías y los valores Respeto, Compromiso, Superación y Adaptabilidad se contrastó con [Inicio](https://www.ikomiperu.com/) y [Nosotros](https://ikomiperu.com/nosotros) de la referencia. Se evitó incluir cifras, testimonios, misión, visión o historia empresarial en estas páginas.
 
 ## 7. Estado de verificación inicial
 
